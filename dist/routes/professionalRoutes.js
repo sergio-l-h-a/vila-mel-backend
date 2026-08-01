@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const professionalController_1 = require("../controllers/professionalController");
+const router = (0, express_1.Router)();
+router.get("/professionals", professionalController_1.getProfessionals);
+router.post("/professionals", professionalController_1.createProfessional);
+router.put("/professionals/:id", professionalController_1.updateProfessional);
+router.delete("/professionals/:id", professionalController_1.deleteProfessional);
+exports.default = router;
