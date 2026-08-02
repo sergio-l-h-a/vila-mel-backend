@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import professionalRoutes from "./routes/professionalRoutes";
-import { connectDatabase } from "./config/database";
+import { sequelize } from "./config/database";
 import { syncDatabase } from "./models/index";
 
 const app = express();
@@ -14,12 +14,16 @@ app.use(express.json());
 app.use("/", professionalRoutes);
 
 const startServer = async () => {
-  await connectDatabase();
-  await syncDatabase();
+  try {
+    await sequelize.authenticate();   // CORRETO
+    await syncDatabase();              // CORRETO
 
-  app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
-  });
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando em http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Erro ao iniciar o servidor:", error);
+  }
 };
 
 startServer();
