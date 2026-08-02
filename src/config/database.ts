@@ -1,5 +1,5 @@
 
-const { Sequelize } = require("sequelize");
+export const { Sequelize } = require("sequelize");
 
 export const connectDatabase = new Sequelize(process.env.DATABASE_URL, {
   dialect: process.env.DB_DIALECT,
