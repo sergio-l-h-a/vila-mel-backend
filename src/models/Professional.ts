@@ -6,6 +6,8 @@ interface ProfessionalAttributes {
   name: string;
   profession: string;
   phone: string;
+  image: string | null;
+  gender: string | null;
 }
 
 interface ProfessionalCreationAttributes
@@ -19,6 +21,8 @@ export class Professional
   public name!: string;
   public profession!: string;
   public phone!: string;
+  public image!: string | null;
+  public gender!: string | null;
 }
 
 Professional.init(
@@ -40,6 +44,16 @@ Professional.init(
       type: DataTypes.STRING(20),
       allowNull: false,
     },
+
+    image: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+
+    gender: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    }
   },
   {
     sequelize,
