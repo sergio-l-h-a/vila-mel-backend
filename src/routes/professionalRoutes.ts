@@ -1,3 +1,4 @@
+import { upload } from "../middlewares/upload";
 import { Router } from "express";
 import {
   getProfessionals,
@@ -9,7 +10,8 @@ import {
 const router = Router();
 
 router.get("/professionals", getProfessionals);
-router.post("/professionals", createProfessional);
+router.post("/professionals", upload.single("image"), createProfessional);
+
 router.put("/professionals/:id", updateProfessional);
 router.delete("/professionals/:id", deleteProfessional);
 
