@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// ⭐ SERVIR A PASTA DE IMAGENS
+app.use("/uploads", express.static("uploads"));
+
+
 // ROTAS CORRETAS
 app.use("/", professionalRoutes);
 
