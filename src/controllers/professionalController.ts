@@ -12,8 +12,8 @@ export const getProfessionals = async (req: Request, res: Response) => {
 
 export const createProfessional = async (req: Request, res: Response) => {
   try {
-    const { name, profession, phone } = req.body;
-    const professional = await Professional.create({ name, profession, phone });
+    const { name, profession, phone, image, gender } = req.body;
+    const professional = await Professional.create({ name, profession, phone, image, gender });
     res.status(201).json(professional);
   } catch (error) {
     res.status(500).json({ error: "Erro ao criar profissional." });
@@ -35,7 +35,7 @@ export const updateProfessional = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "ID deve ser um número." });
     }
 
-    const { name, profession, phone } = req.body;
+    const { name, profession, phone, image, gender } = req.body;
 
     const professional = await Professional.findByPk(numericId);
 
@@ -46,6 +46,8 @@ export const updateProfessional = async (req: Request, res: Response) => {
     professional.name = name ?? professional.name;
     professional.profession = profession ?? professional.profession;
     professional.phone = phone ?? professional.phone;
+    professional.image = image ?? professional.image;
+    professional.gender = gender ?? professional.gender;
 
     await professional.save();
 
