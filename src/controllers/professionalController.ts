@@ -12,8 +12,9 @@ export const getProfessionals = async (req: Request, res: Response) => {
 
 export const createProfessional = async (req: Request, res: Response) => {
   try {
-    const { name, profession, phone, image, gender } = req.body;
-    const professional = await Professional.create({ name, profession, phone, image, gender });
+    const { name, profession, phone, gender } = req.body;
+    const image = req.file ? req.file.filename : null;
+    const professional = await Professional.create({ name, profession, phone, gender, image });
     res.status(201).json(professional);
   } catch (error) {
     res.status(500).json({ error: "Erro ao criar profissional." });
