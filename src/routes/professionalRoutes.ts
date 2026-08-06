@@ -29,6 +29,7 @@ router.get("/admin/professionals", adminGetProfessionals);
 // ======================================================
 // 📌 USUÁRIO — CADASTRAR PROFISSIONAL
 // ======================================================
+router.post("/professional", createProfessional);
 router.post("/professionals", upload.single("image"), createProfessional);
 
 // ======================================================
