@@ -11,8 +11,15 @@ import {
   adminDeleteProfessional,
   adminLogin
 } from "../controllers/professionalController";
+import { Professional } from "../models";
 
 const router = Router();
+
+router.get("/professionals", async (req, res) => {
+  const professionals = await Professional.findAll();
+  res.json(professionals);
+});
+
 
 // ======================================================
 // 📌 ADMIN — LISTAR TODOS OS PROFISSIONAIS
