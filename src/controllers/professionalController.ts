@@ -180,3 +180,21 @@ export const adminEditProfessional = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Erro ao editar profissional." });
   }
 };
+
+
+export const adminLogin = (req: Request, res: Response) => {
+  const { key } = req.body;
+
+  if (key === ADMIN_KEY) {
+    return res.json({
+      authorized: true,
+      role: "admin"
+    });
+  }
+
+  return res.status(401).json({
+    authorized: false,
+    message: "Chave de administrador inválida"
+  });
+};
+

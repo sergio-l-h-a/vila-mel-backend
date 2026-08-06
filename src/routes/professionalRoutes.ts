@@ -8,7 +8,8 @@ import {
   updateOwnProfile,
   adminGetProfessionals,
   adminEditProfessional,
-  adminDeleteProfessional
+  adminDeleteProfessional,
+  adminLogin
 } from "../controllers/professionalController";
 
 const router = Router();
@@ -27,6 +28,9 @@ router.post("/professionals", upload.single("image"), createProfessional);
 // 📌 USUÁRIO — LOGIN
 // ======================================================
 router.post("/professionals/login", login);
+
+router.post("/admin/login", adminLogin);
+
 
 // ======================================================
 // 📌 USUÁRIO — EDITAR O PRÓPRIO PERFIL
