@@ -8,6 +8,8 @@ interface ProfessionalAttributes {
   phone: string;
   image: string | null;
   gender: string | null;
+  key: string | null;
+  photoChanges: number;
 }
 
 interface ProfessionalCreationAttributes
@@ -23,6 +25,8 @@ export class Professional
   public phone!: string;
   public image!: string | null;
   public gender!: string | null;
+  public key!: string | null;
+  public photoChanges!: number;
 }
 
 Professional.init(
@@ -53,6 +57,19 @@ Professional.init(
     gender: {
       type: DataTypes.STRING(20),
       allowNull: true,
+    },
+
+     // 🔑 Chave única do usuário
+    key: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+
+    // 🔁 Quantas vezes ele já editou a foto
+    photoChanges: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   },
   {
