@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Professional } from "../models";
 
 // 🔐 Chave do administrador (coloque no .env)
-const ADMIN_KEY = process.env.ADMIN_KEY || "superadmin123";
+const ADMIN_KEY = process.env.ADMIN_KEY  || "";
 
 // ======================================================
 // 📌 1. LOGIN DO USUÁRIO (via key)
