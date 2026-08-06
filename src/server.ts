@@ -17,6 +17,25 @@ app.use("/uploads", express.static("uploads"));
 // ROTAS CORRETAS
 app.use("/", professionalRoutes);
 
+app.post("/admin/login", (req, res) => {
+  const { key } = req.body;
+
+  if (key === process.env.ADMIN_KEY) {
+    return res.json({
+      authorized: true,
+      role: "admin"
+    });
+  }
+
+  return res.status(401).json({
+    authorized: false,
+    message: "Chave de administrador inválida"
+  });
+});
+
+
+
+
 const startServer = async () => {
   try {
     await sequelize.authenticate();   // CORRETO
