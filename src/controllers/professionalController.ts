@@ -4,6 +4,19 @@ import { Professional } from "../models";
 // 🔐 Chave do administrador (coloque no .env)
 const ADMIN_KEY = process.env.ADMIN_KEY  || "";
 
+
+export const adminGetProfessionals = async (req: Request, res: Response) => {
+  const adminKey = req.headers.authorization;
+
+  if (adminKey !== ADMIN_KEY) {
+    return res.status(403).json({ error: "Apenas o administrador pode consultar." });
+  }
+
+  const professionals = await Professional.findAll();
+  res.json(professionals);
+};
+
+
 // ======================================================
 // 📌 1. LOGIN DO USUÁRIO (via key)
 // ======================================================
@@ -26,19 +39,6 @@ export const login = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Erro no login." });
   }
 };
-
-
-export const adminGetProfessionals = async (req: Request, res: Response) => {
-  const adminKey = req.headers.authorization;
-
-  if (adminKey !== ADMIN_KEY) {
-    return res.status(403).json({ error: "Apenas o administrador pode consultar." });
-  }
-
-  const professionals = await Professional.findAll();
-  res.json(professionals);
-};
-
 
 
 // ======================================================
