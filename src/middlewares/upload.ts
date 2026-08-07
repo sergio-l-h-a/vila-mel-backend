@@ -1,14 +1,14 @@
-import multer, { FileFilterCallback } from "multer";
-import path from "path";
-import { Request } from "express";
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary";
 
-const storage = multer.diskStorage({
-  destination: (req: Request, file: Express.Multer.File, cb: Function) => {
-    cb(null, path.resolve("uploads"));
-  },
-
-  filename: (req: Request, file: Express.Multer.File, cb: Function) => {
-    cb(null, Date.now() + "-" + file.originalname);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: "vila-mel-profissionais",
+      allowed_formats: ["jpg", "png", "jpeg", "webp"]
+    };
   }
 });
 

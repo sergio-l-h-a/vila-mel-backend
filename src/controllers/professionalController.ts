@@ -48,7 +48,7 @@ export const createProfessional = async (req: Request, res: Response) => {
   try {
     const { name, profession, phone, gender, key } = req.body;
 
-    const image = req.file ? req.file.filename : null;
+    const image = req.file ? (req.file as any).path : null;
 
     const professional = await Professional.create({
       name,
@@ -63,9 +63,11 @@ export const createProfessional = async (req: Request, res: Response) => {
     return res.status(201).json(professional);
 
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Erro ao cadastrar profissional." });
   }
 };
+
 
 // ======================================================
 // 📌 3. USUÁRIO — editar o próprio perfil
