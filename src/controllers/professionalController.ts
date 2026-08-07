@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { Professional } from "../models";
 
-// 🔐 Chave do administrador (coloque no .env)
-const ADMIN_KEY = process.env.ADMIN_KEY  || "";
+const ADMIN_KEY = process.env.ADMIN_KEY || "";
 
-
+// ADMIN — LISTAR PROFISSIONAIS
 export const adminGetProfessionals = async (req: Request, res: Response) => {
   const adminKey = req.headers.authorization;
 
@@ -16,10 +15,7 @@ export const adminGetProfessionals = async (req: Request, res: Response) => {
   res.json(professionals);
 };
 
-
-// ======================================================
-// 📌 1. LOGIN DO USUÁRIO (via key)
-// ======================================================
+// LOGIN DO USUÁRIO
 export const login = async (req: Request, res: Response) => {
   try {
     const { key } = req.body;
@@ -40,10 +36,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-
-// ======================================================
-// 📌 2. CADASTRAR PROFISSIONAL (com key)
-// ======================================================
+// CADASTRAR PROFISSIONAL
 export const createProfessional = async (req: Request, res: Response) => {
   try {
     const { name, profession, phone, gender, key } = req.body;
@@ -68,11 +61,7 @@ export const createProfessional = async (req: Request, res: Response) => {
   }
 };
 
-
-// ======================================================
-// 📌 3. USUÁRIO — editar o próprio perfil
-// ======================================================
-
+// EDITAR PERFIL
 export const updateOwnProfile = async (req: Request, res: Response) => {
   const { key, name, profession, phone, gender } = req.body;
 
@@ -92,10 +81,7 @@ export const updateOwnProfile = async (req: Request, res: Response) => {
   res.json({ success: true, professional });
 };
 
-
-// ======================================================
-// 📌 4. ATUALIZAR FOTO (limite de 3 vezes)
-// ======================================================
+// ATUALIZAR FOTO (CORRIGIDO)
 export const updatePhoto = async (req: Request, res: Response) => {
   const { key } = req.body;
 
@@ -109,7 +95,7 @@ export const updatePhoto = async (req: Request, res: Response) => {
     return res.status(403).json({ error: "Limite de edições atingido." });
   }
 
-  const image = req.file ? req.file.filename : null;
+  const image = req.file ? (req.file as any).path : null;
 
   professional.image = image;
   professional.photoChanges += 1;
@@ -119,9 +105,7 @@ export const updatePhoto = async (req: Request, res: Response) => {
   res.json({ success: true, professional });
 };
 
-// ======================================================
-// 📌 5. ADMIN — DELETAR PROFISSIONAL
-// ======================================================
+// ADMIN — DELETAR
 export const adminDeleteProfessional = async (req: Request, res: Response) => {
   try {
     const adminKey = req.headers.authorization;
@@ -131,7 +115,6 @@ export const adminDeleteProfessional = async (req: Request, res: Response) => {
     }
 
     const { id } = req.params;
-
     const numericId = Number(id);
 
     const professional = await Professional.findByPk(numericId);
@@ -149,9 +132,7 @@ export const adminDeleteProfessional = async (req: Request, res: Response) => {
   }
 };
 
-// ======================================================
-// 📌 6. ADMIN — EDITAR QUALQUER PROFISSIONAL
-// ======================================================
+// ADMIN — EDITAR
 export const adminEditProfessional = async (req: Request, res: Response) => {
   try {
     const adminKey = req.headers.authorization;
@@ -183,7 +164,7 @@ export const adminEditProfessional = async (req: Request, res: Response) => {
   }
 };
 
-
+// ADMIN — LOGIN
 export const adminLogin = (req: Request, res: Response) => {
   const { key } = req.body;
 
@@ -199,4 +180,3 @@ export const adminLogin = (req: Request, res: Response) => {
     message: "Chave de administrador inválida"
   });
 };
-

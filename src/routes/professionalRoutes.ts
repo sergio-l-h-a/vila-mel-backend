@@ -15,49 +15,34 @@ import { Professional } from "../models";
 
 const router = Router();
 
+// LISTAR PROFISSIONAIS
 router.get("/professionals", async (req, res) => {
   const professionals = await Professional.findAll();
   res.json(professionals);
 });
 
-
-// ======================================================
-// 📌 ADMIN — LISTAR TODOS OS PROFISSIONAIS
-// ======================================================
+// ADMIN — LISTAR TODOS
 router.get("/admin/professionals", adminGetProfessionals);
 
-// ======================================================
-// 📌 USUÁRIO — CADASTRAR PROFISSIONAL
-// ======================================================
-router.post("/professional", createProfessional);
+// USUÁRIO — CADASTRAR PROFISSIONAL
 router.post("/professionals", upload.single("image"), createProfessional);
 
-// ======================================================
-// 📌 USUÁRIO — LOGIN
-// ======================================================
+// LOGIN USUÁRIO
 router.post("/professionals/login", login);
 
+// LOGIN ADMIN
 router.post("/admin/login", adminLogin);
 
-
-// ======================================================
-// 📌 USUÁRIO — EDITAR O PRÓPRIO PERFIL
-// ======================================================
+// USUÁRIO — EDITAR PERFIL
 router.put("/professionals/update", updateOwnProfile);
 
-// ======================================================
-// 📌 USUÁRIO — ATUALIZAR FOTO (limite de 3 vezes)
-// ======================================================
+// USUÁRIO — ATUALIZAR FOTO
 router.put("/professionals/update-photo", upload.single("image"), updatePhoto);
 
-// ======================================================
-// 📌 ADMIN — EDITAR QUALQUER PROFISSIONAL
-// ======================================================
+// ADMIN — EDITAR PROFISSIONAL
 router.put("/admin/professionals/:id", adminEditProfessional);
 
-// ======================================================
-// 📌 ADMIN — DELETAR PROFISSIONAL
-// ======================================================
+// ADMIN — DELETAR PROFISSIONAL
 router.delete("/admin/professionals/:id", adminDeleteProfessional);
 
 export default router;
