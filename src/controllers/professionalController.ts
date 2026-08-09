@@ -39,7 +39,7 @@ export const login = async (req: Request, res: Response) => {
 // CADASTRAR PROFISSIONAL
 export const createProfessional = async (req: Request, res: Response) => {
   try {
-    const { name, profession, phone, gender, key } = req.body;
+    const { name, profession, phone, gender, key, photoChanges } = req.body;
 
     const image = req.file ? (req.file as any).path : null;
 
@@ -50,7 +50,7 @@ export const createProfessional = async (req: Request, res: Response) => {
       gender,
       key,
       image,
-      photoChanges: 0
+      photoChanges
     });
 
     return res.status(201).json(professional);
