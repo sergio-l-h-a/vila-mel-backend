@@ -48,8 +48,7 @@ export const createProfessional = async (req: Request, res: Response) => {
       profession,
       phone,
       gender,
-      key,
-      image
+      key
     });
 
     return res.status(201).json(professional);
