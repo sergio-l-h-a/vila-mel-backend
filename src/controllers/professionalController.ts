@@ -44,7 +44,8 @@ export const createProfessional = async (req: Request, res: Response) => {
     console.log("REQ BODY:", req.body);
     console.log("KEY RECEBIDA:", key);
 
-    const image = req.file ? (req.file as any).path : null;
+    const image = req.file ? (req.file as any).secure_url : null;
+
 
     const professional = await Professional.create({
       name,
