@@ -41,11 +41,7 @@ export const createProfessional = async (req: Request, res: Response) => {
   try {
     const { name, profession, phone, gender, key } = req.body;
 
-    console.log("REQ BODY:", req.body);
-    console.log("KEY RECEBIDA:", key);
-
     const image = req.file ? (req.file as any).secure_url : null;
-
 
     const professional = await Professional.create({
       name,
@@ -59,10 +55,11 @@ export const createProfessional = async (req: Request, res: Response) => {
     return res.status(201).json(professional);
 
   } catch (error: any) {
-    console.log("ERRO AO CADASTRAR:", error.message);
+    console.log("ERRO AO CADASTRAR:", error);
     return res.status(500).json({ error: "Erro ao cadastrar profissional." });
   }
 };
+
 
 
 // EDITAR PERFIL
