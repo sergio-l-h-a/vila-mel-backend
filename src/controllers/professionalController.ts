@@ -10,7 +10,7 @@ export const adminGetProfessionals = async (req: Request, res: Response) => {
   if (adminKey !== ADMIN_KEY) {
     return res.status(403).json({ error: "Apenas o administrador pode consultar." });
   }
-
+  console.log("Lista de profissionais AQUI!")
   const professionals = await Professional.findAll();
   res.json(professionals);
 };
