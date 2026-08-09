@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../config/database";
 
 interface ProfessionalAttributes {
@@ -9,7 +9,6 @@ interface ProfessionalAttributes {
   image: string | null;
   gender: string | null;
   key: string | null;
-  photoChanges: number;
 }
 
 interface ProfessionalCreationAttributes
@@ -26,50 +25,38 @@ export class Professional
   public image!: string | null;
   public gender!: string | null;
   public key!: string | null;
-  public photoChanges!: number;
 }
 
 Professional.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     profession: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     phone: {
-      type: DataTypes.STRING(20),
-      allowNull: false,
-    },
-
-    image: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-
-    gender: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-
-     // 🔑 Chave única do usuário
-    key: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
     },
-
-    // 🔁 Quantas vezes ele já editou a foto
-    photoChanges: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    key: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   },
   {

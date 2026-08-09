@@ -39,7 +39,7 @@ export const login = async (req: Request, res: Response) => {
 // CADASTRAR PROFISSIONAL
 export const createProfessional = async (req: Request, res: Response) => {
   try {
-    const { name, profession, phone, gender, key, photoChanges } = req.body;
+    const { name, profession, phone, gender, key } = req.body;
 
     const image = req.file ? (req.file as any).path : null;
 
@@ -49,8 +49,7 @@ export const createProfessional = async (req: Request, res: Response) => {
       phone,
       gender,
       key,
-      image,
-      photoChanges
+      image
     });
 
     return res.status(201).json(professional);
@@ -63,7 +62,7 @@ export const createProfessional = async (req: Request, res: Response) => {
 
 // EDITAR PERFIL
 export const updateOwnProfile = async (req: Request, res: Response) => {
-  const { key, name, profession, phone, gender } = req.body;
+  const { name, profession, phone, gender, key } = req.body;
 
   const professional = await Professional.findOne({ where: { key } });
 
@@ -75,6 +74,7 @@ export const updateOwnProfile = async (req: Request, res: Response) => {
   professional.profession = profession || professional.profession;
   professional.phone = phone || professional.phone;
   professional.gender = gender || professional.gender;
+  professional.key = key || professional.key;
 
   await professional.save();
 
@@ -91,14 +91,10 @@ export const updatePhoto = async (req: Request, res: Response) => {
     return res.status(404).json({ error: "Usuário não encontrado." });
   }
 
-  if (professional.photoChanges >= 3) {
-    return res.status(403).json({ error: "Limite de edições atingido." });
-  }
-
   const image = req.file ? (req.file as any).path : null;
 
   professional.image = image;
-  professional.photoChanges += 1;
+
 
   await professional.save();
 
