@@ -39,6 +39,7 @@ app.post("/admin/login", (req, res) => {
 const startServer = async () => {
   try {
     await sequelize.authenticate();   // CORRETO
+    await syncDatabase();              // CORRETO
 
     app.listen(PORT, () => {
       console.log(`Servidor rodando em http://localhost:${PORT}`);
