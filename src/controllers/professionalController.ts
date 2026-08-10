@@ -16,14 +16,15 @@ export const adminGetProfessionals = async (req: Request, res: Response) => {
 };
 
 // LOGIN DO USUÁRIO
-export const login = async (req: Request, res: Response) => {
+
+export const loginProfessional = async (req: Request, res: Response) => {
   try {
     const { key } = req.body;
 
     const professional = await Professional.findOne({ where: { key } });
 
     if (!professional) {
-      return res.status(404).json({ authorized: false });
+      return res.status(401).json({ error: "Chave inválida" });
     }
 
     return res.json({
@@ -32,9 +33,10 @@ export const login = async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: "Erro no login." });
+    return res.status(500).json({ error: "Erro ao fazer login" });
   }
 };
+
 
 // CADASTRAR PROFISSIONAL
 export const createProfessional = async (req: Request, res: Response) => {

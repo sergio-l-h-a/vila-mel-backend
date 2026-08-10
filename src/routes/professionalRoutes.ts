@@ -3,7 +3,7 @@ import { upload } from "../middlewares/upload";
 
 import {
   createProfessional,
-  login,
+  loginProfessional,
   updatePhoto,
   updateOwnProfile,
   adminGetProfessionals,
@@ -28,7 +28,7 @@ router.get("/admin/professionals", adminGetProfessionals);
 router.post("/professionals", upload.single("image"), createProfessional);
 
 // LOGIN USUÁRIO
-router.post("/professionals/login", login);
+router.post("/professionals/login", loginProfessional);
 
 // LOGIN ADMIN
 router.post("/admin/login", adminLogin);
