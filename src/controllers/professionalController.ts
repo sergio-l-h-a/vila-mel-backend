@@ -43,6 +43,7 @@ export const createProfessional = async (req: Request, res: Response) => {
   try {
     const { name, profession, phone, gender, key } = req.body;
 
+    // CloudinaryStorage retorna secure_url, não path
     const image = req.file ? (req.file as any).secure_url : null;
 
     const professional = await Professional.create({
