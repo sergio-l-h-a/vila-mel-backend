@@ -7,9 +7,10 @@ const storage = new CloudinaryStorage({
   params: async (req, file) => {
     return {
       folder: "vila-mel-profissionais",
-      allowed_formats: ["jpg", "png", "jpeg", "webp"]
+      allowed_formats: ["jpg", "png", "jpeg", "webp", "heic", "heif"]
     };
   }
 });
+
 
 export const upload = multer({ storage });
