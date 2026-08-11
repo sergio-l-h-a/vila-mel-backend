@@ -9,6 +9,7 @@ interface ProfessionalAttributes {
   image: string | null;
   gender: string | null;
   key: string | null;
+  role: string | null;
 }
 
 interface ProfessionalCreationAttributes
@@ -25,6 +26,7 @@ export class Professional
   public image!: string | null;
   public gender!: string | null;
   public key!: string | null;
+  public role!: string | null;
 }
 
 Professional.init(
@@ -57,6 +59,10 @@ Professional.init(
     key: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: 'user'
     }
   },
   {

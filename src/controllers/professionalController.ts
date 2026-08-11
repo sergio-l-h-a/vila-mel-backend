@@ -29,7 +29,16 @@ export const loginProfessional = async (req: Request, res: Response) => {
 
     return res.json({
       authorized: true,
-      professional
+      professional: {
+        id: professional.id,
+        name: professional.name,
+        profession: professional.profession,
+        phone: professional.phone,
+        image: professional.image,
+        gender: professional.gender,
+        key: professional.key,
+        role: professional.role
+      }
     });
 
   } catch (error) {
