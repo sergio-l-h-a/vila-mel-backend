@@ -36,6 +36,9 @@ router.post("/admin/login", adminLogin);
 // USUÁRIO — EDITAR PERFIL
 router.put("/professionals/update", updateOwnProfile);
 
+router.put("/professionals/:id", updateOwnProfile);
+
+
 // USUÁRIO — ATUALIZAR FOTO
 router.put("/professionals/update-photo", upload.single("image"), updatePhoto);
 
