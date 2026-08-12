@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { upload } from "../middlewares/upload";
 
+
 import {
   createProfessional,
   loginProfessional,
@@ -12,7 +13,7 @@ import {
   adminLogin
 } from "../controllers/professionalController";
 import { Professional } from "../models";
-
+import { generateKey } from "../controllers/keyController";
 const router = Router();
 
 // LISTAR PROFISSIONAIS
@@ -23,6 +24,8 @@ router.get("/professionals", async (req, res) => {
 
 // ADMIN — LISTAR TODOS
 router.get("/admin/professionals", adminGetProfessionals);
+
+router.post("/generate-key", generateKey);
 
 // USUÁRIO — CADASTRAR PROFISSIONAL
 router.post("/professionals", upload.single("image"), createProfessional);

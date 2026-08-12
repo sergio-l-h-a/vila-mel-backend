@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Professional } from "../models";
+import { ValidKey } from "../models/ValidKey";
 
 const ADMIN_KEY = process.env.ADMIN_KEY || "";
 
@@ -51,6 +52,22 @@ export const loginProfessional = async (req: Request, res: Response) => {
 export const createProfessional = async (req: Request, res: Response) => {
   try {
     const { name, profession, phone, gender, key } = req.body;
+
+    // VALIDAR CHAVE
+    const valid = await ValidKey.findOne({ where: { key } });
+
+    if (!valid) {
+      return res.status(403).json({
+        error: "Chave inválida. Você não pode cadastrar."
+      });
+    }
+
+    if (valid.used) {
+      return res.status(409).json({
+        error: "Esta chave já foi usada para um cadastro."
+      });
+    }
+
     
     // CloudinaryStorage retorna secure_url, não path
     const image = req.file ? (req.file as any).secure_url : null;
@@ -61,11 +78,16 @@ export const createProfessional = async (req: Request, res: Response) => {
       phone,
       gender,
       key,
-      image
+      image,
+      deleteCount: 0,
+      blocked: false
     });
+
+    // MARCAR CHAVE COMO USADA
+    valid.used = true;
+    await valid.save();
     
     return res.status(201).json(professional);
-    
     
     
   } catch (error: any) {
