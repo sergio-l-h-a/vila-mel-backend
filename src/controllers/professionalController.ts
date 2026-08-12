@@ -51,13 +51,6 @@ export const loginProfessional = async (req: Request, res: Response) => {
 export const createProfessional = async (req: Request, res: Response) => {
   try {
     const { name, profession, phone, gender, key } = req.body;
-    const existing = await Professional.findOne({ where: { key } });
-    if (existing) {
-      return res.status(409).json({
-        error: "Já existe um cadastro com essa chave.",
-        professional: existing
-      });
-    }
     
     // CloudinaryStorage retorna secure_url, não path
     const image = req.file ? (req.file as any).secure_url : null;
