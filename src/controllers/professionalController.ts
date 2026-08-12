@@ -66,10 +66,25 @@ export const createProfessional = async (req: Request, res: Response) => {
 
     return res.status(201).json(professional);
 
+    const existing = await Professional.findOne({ where: { key } });
+  
+    if (existing) {
+      return res.status(409).json({
+        error: "Já existe um cadastro com essa chave.",
+        professional: existing
+      });
+    }
+    
   } catch (error: any) {
     console.log("ERRO AO CADASTRAR:", error);
     return res.status(500).json({ error: "Erro ao cadastrar profissional." });
   }
+
+
+
+
+
+
 };
 
 
