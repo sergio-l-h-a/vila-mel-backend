@@ -16,56 +16,36 @@ export const adminGetProfessionals = async (req: Request, res: Response) => {
   res.json(professionals);
 };
 
-// LOGIN DO USUÁRIO
-
-export const loginProfessional = async (req: Request, res: Response) => {
-  try {
-    const { key } = req.body;
-
-    const professional = await Professional.findOne({ where: { key } });
-
-    if (!professional) {
-      return res.status(401).json({ error: "Chave inválida" });
-    }
-
-    return res.json({
-      authorized: true,
-      professional: {
-        id: professional.id,
-        name: professional.name,
-        profession: professional.profession,
-        phone: professional.phone,
-        image: professional.image,
-        gender: professional.gender,
-        key: professional.key,
-        role: professional.role
-      }
-    });
-
-  } catch (error) {
-    return res.status(500).json({ error: "Erro ao fazer login" });
-  }
-};
-
 
 // CADASTRAR PROFISSIONAL
 export const createProfessional = async (req: Request, res: Response) => {
   try {
     const { name, profession, phone, gender, key } = req.body;
 
+    // valida se body chegou
+    if (!name || !profession || !phone || !gender || !key) {
+      console.log("BODY INCOMPLETO:", req.body);
+      return res.status(400).json({ error: "Dados incompletos para cadastro." });
+    }
+
+    // validar chave
     const valid = await ValidKey.findOne({ where: { key } });
 
     if (!valid) {
-      return res.status(403).json({ error: "Chave inválida. Você não pode cadastrar." });
+      return res.status(403).json({
+        error: "Chave inválida. Você não pode cadastrar."
+      });
     }
 
     if (valid.used) {
-      return res.status(409).json({ error: "Esta chave já foi usada para um cadastro." });
+      return res.status(409).json({
+        error: "Esta chave já foi usada para um cadastro."
+      });
     }
 
-    // PEGAR IMAGEM DO CLOUDINARY
-    const files = req.files as Express.Multer.File[];
-    const image = files?.[0]?.path || null;
+    // imagem vinda do CloudinaryStorage (URL em path)
+    const file = req.file as any;
+    const image = file ? file.path : null;
 
     const professional = await Professional.create({
       name,
@@ -82,10 +62,36 @@ export const createProfessional = async (req: Request, res: Response) => {
     await valid.save();
 
     return res.status(201).json(professional);
-
   } catch (error) {
     console.log("ERRO AO CADASTRAR:", error);
     return res.status(500).json({ error: "Erro ao cadastrar profissional." });
+  }
+};
+
+// LOGIN DO USUÁRIO
+
+export const loginProfessional = async (req: Request, res: Response) => {
+  try {
+    const { key } = req.body;
+
+    if (!key) {
+      return res.status(400).json({ error: "Informe sua chave." });
+    }
+
+    const professional = await Professional.findOne({ where: { key } });
+
+    if (!professional) {
+      return res.status(404).json({ error: "Profissional não encontrado." });
+    }
+
+    if (professional.blocked) {
+      return res.status(403).json({ error: "Conta bloqueada." });
+    }
+
+    return res.json(professional);
+  } catch (error) {
+    console.log("ERRO AO FAZER LOGIN:", error);
+    return res.status(500).json({ error: "Erro ao fazer login." });
   }
 };
 

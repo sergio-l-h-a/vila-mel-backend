@@ -1,7 +1,5 @@
 import { Router } from "express";
 import { upload } from "../middlewares/upload";
-
-
 import {
   createProfessional,
   loginProfessional,
@@ -14,47 +12,41 @@ import {
 } from "../controllers/professionalController";
 import { Professional } from "../models";
 import { generateKey } from "../controllers/keyController";
+
 const router = Router();
 
-// LISTAR PROFISSIONAIS
+// listar profissionais (cards da home)
 router.get("/professionals", async (req, res) => {
   const professionals = await Professional.findAll();
   res.json(professionals);
 });
 
-// ADMIN — LISTAR TODOS
+// admin — listar todos
 router.get("/admin/professionals", adminGetProfessionals);
 
+// gerar chave
 router.post("/generate-key", generateKey);
 
-// USUÁRIO — CADASTRAR PROFISSIONAL
-router.post("/professionals", upload.any(), createProfessional);
+// usuário — cadastrar profissional (com imagem)
+router.post("/professionals", upload.single("image"), createProfessional);
 
-router.post("/professionals", upload.single("image"), (req, res, next) => {
-  console.log("BODY:", req.body);
-  next();
-}, createProfessional);
-
-
-// LOGIN USUÁRIO
+// login usuário
 router.post("/professionals/login", loginProfessional);
 
-// LOGIN ADMIN
+// login admin
 router.post("/admin/login", adminLogin);
 
-// USUÁRIO — EDITAR PERFIL
+// usuário — editar perfil
 router.put("/professionals/update", updateOwnProfile);
-
 router.put("/professionals/:id", updateOwnProfile);
 
-
-// USUÁRIO — ATUALIZAR FOTO
+// usuário — atualizar foto
 router.put("/professionals/update-photo", upload.single("image"), updatePhoto);
 
-// ADMIN — EDITAR PROFISSIONAL
+// admin — editar profissional
 router.put("/admin/professionals/:id", adminEditProfessional);
 
-// ADMIN — DELETAR PROFISSIONAL
+// admin — deletar profissional
 router.delete("/admin/professionals/:id", adminDeleteProfessional);
 
 export default router;

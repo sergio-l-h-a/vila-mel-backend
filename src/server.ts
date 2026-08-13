@@ -18,6 +18,7 @@ app.use("/uploads", express.static("uploads"));
 // ROTAS CORRETAS
 app.use("/", professionalRoutes);
 
+// admin login extra (se quiser manter separado)
 app.post("/admin/login", (req, res) => {
   const { key } = req.body;
 
