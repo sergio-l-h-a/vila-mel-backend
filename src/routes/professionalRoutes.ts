@@ -31,7 +31,21 @@ router.post("/generate-key", generateKey);
 router.post("/professionals", upload.single("image"), createProfessional);
 
 // login usuário
-router.post("/professionals/login", loginProfessional);
+router.post("/professionals/login", async (req, res) => {
+  const { key } = req.body;
+
+  const professional = await Professional.findOne({ where: { key } });
+
+  if (!professional) {
+    return res.status(404).json({ authorized: false });
+  }
+
+  return res.json({
+    authorized: true,
+    professional
+  });
+});
+
 
 // login admin
 router.post("/admin/login", adminLogin);
