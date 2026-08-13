@@ -53,26 +53,20 @@ export const createProfessional = async (req: Request, res: Response) => {
   try {
     const { name, profession, phone, gender, key } = req.body;
 
-    // VALIDAR CHAVE
     const valid = await ValidKey.findOne({ where: { key } });
 
     if (!valid) {
-      return res.status(403).json({
-        error: "Chave inválida. Você não pode cadastrar."
-      });
+      return res.status(403).json({ error: "Chave inválida. Você não pode cadastrar." });
     }
 
     if (valid.used) {
-      return res.status(409).json({
-        error: "Esta chave já foi usada para um cadastro."
-      });
+      return res.status(409).json({ error: "Esta chave já foi usada para um cadastro." });
     }
 
-    
-    // CloudinaryStorage retorna secure_url, não path
+    // PEGAR IMAGEM DO CLOUDINARY
     const files = req.files as Express.Multer.File[];
     const image = files?.[0]?.path || null;
-    
+
     const professional = await Professional.create({
       name,
       profession,
@@ -84,18 +78,17 @@ export const createProfessional = async (req: Request, res: Response) => {
       blocked: false
     });
 
-    // MARCAR CHAVE COMO USADA
     valid.used = true;
     await valid.save();
-    
+
     return res.status(201).json(professional);
-    
-    
-  } catch (error: any) {
+
+  } catch (error) {
     console.log("ERRO AO CADASTRAR:", error);
     return res.status(500).json({ error: "Erro ao cadastrar profissional." });
   }
 };
+
 
 
 
