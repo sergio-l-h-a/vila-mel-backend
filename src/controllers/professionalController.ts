@@ -70,7 +70,8 @@ export const createProfessional = async (req: Request, res: Response) => {
 
     
     // CloudinaryStorage retorna secure_url, não path
-    const image = req.file ? (req.file as any).secure_url : null;
+    const files = req.files as Express.Multer.File[];
+    const image = files?.[0]?.path || null;
     
     const professional = await Professional.create({
       name,
@@ -94,12 +95,6 @@ export const createProfessional = async (req: Request, res: Response) => {
     console.log("ERRO AO CADASTRAR:", error);
     return res.status(500).json({ error: "Erro ao cadastrar profissional." });
   }
-
-
-
-
-
-
 };
 
 

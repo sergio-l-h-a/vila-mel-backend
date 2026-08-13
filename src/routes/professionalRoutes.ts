@@ -28,7 +28,13 @@ router.get("/admin/professionals", adminGetProfessionals);
 router.post("/generate-key", generateKey);
 
 // USUÁRIO — CADASTRAR PROFISSIONAL
-router.post("/professionals", upload.single("image"), createProfessional);
+router.post("/professionals", upload.any(), createProfessional);
+
+router.post("/professionals", upload.single("image"), (req, res, next) => {
+  console.log("BODY:", req.body);
+  next();
+}, createProfessional);
+
 
 // LOGIN USUÁRIO
 router.post("/professionals/login", loginProfessional);
