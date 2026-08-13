@@ -73,12 +73,13 @@ export const createProfessional = async (req: Request, res: Response) => {
 export const loginProfessional = async (req: Request, res: Response) => {
   try {
     const { key } = req.body;
+    
+    const professional = await Professional.findOne({ where: { key } });
 
     if (!key) {
       return res.status(400).json({ error: "Informe sua chave." });
     }
 
-    const professional = await Professional.findOne({ where: { key } });
 
     if (!professional) {
       return res.status(404).json({ error: "Profissional não encontrado." });
