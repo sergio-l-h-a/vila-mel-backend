@@ -3,7 +3,6 @@ import cors from "cors";
 import professionalRoutes from "./routes/professionalRoutes";
 import { sequelize } from "./config/database";
 import { syncDatabase } from "./models/index";
-import formData from "express-form-data";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,10 +11,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// 🔥 NECESSÁRIO PARA LER multipart/form-data
-app.use(formData.parse());
-app.use(formData.format());
-app.use(formData.stream());
+
 
 app.use("/uploads", express.static("uploads"));
 app.use("/", professionalRoutes);
